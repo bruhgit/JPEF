@@ -1,0 +1,30 @@
+[package]
+name = "jpef"
+version = "1.0.0"
+edition = "2021"
+authors = ["JPEF Team"]
+description = "Java Portable Executable Format - Convert JAR to .exe, .elf, .app"
+license = "MIT OR Apache-2.0"
+
+[lib]
+name = "jpef"
+crate-type = ["cdylib", "rlib", "staticlib"]
+
+[[bin]]
+name = "jpef"
+path = "src/main.rs"
+
+[dependencies]
+clap = { version = "4.5", features = ["derive", "cargo"] }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+zip = { version = "2.2", default-features = false, features = ["deflate"] }
+image = { version = "0.25", default-features = false, features = ["png", "jpeg", "ico"] }
+thiserror = "2.0"
+colored = "3.0"
+
+[profile.release]
+opt-level = 3
+lto = true
+codegen-units = 1
+strip = true

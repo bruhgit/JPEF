@@ -1,0 +1,16 @@
+{
+  "name": "jpef",
+  "version": "1.0.0",
+  "description": "Java Portable Executable Format - Convert JAR to .exe, .elf, and .app in Node.js & TypeScript",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "scripts": {
+    "test": "node example.js"
+  },
+  "keywords": ["java", "jar", "exe", "elf", "app", "mach-o", "converter", "packaging"],
+  "author": "JPEF Team",
+  "license": "MIT",
+  "dependencies": {
+    "koffi": "^2.11.0"
+  }
+}
