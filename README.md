@@ -1,47 +1,67 @@
-# Java Portable Executable Format (JPEF) - Rust Core & Multi-Language SDK
+# <p align="center">☕ Java Portable Executable Format (JPEF)</p>
 
-**JPEF**, Java Archive (`.jar`) dosyalarını yerel (native) **Windows (`.exe`)**, **Linux (`.elf`)** ve **macOS (`.app`)** çalıştırılabilir formatlarına dönüştüren; çekirdeği **Rust** ile baştan yazılmış yüksek performanslı, bellek güvenli ve çok dilli (multi-language) bir platform paketleme aracıdır.
+<p align="center">
+  <b>High-performance, memory-safe packaging engine written in Rust that converts Java Archive (<code>.jar</code>) files into native Windows (<code>.exe</code>), Linux (<code>.elf</code>), and macOS (<code>.app</code>) executables with universal multi-language bindings.</b>
+</p>
 
----
-
-## ⚡ Rust Çekirdeği ve Çoklu Dil Desteği
-
-JPEF çekirdeği sıfırdan Rust ile geliştirilmiş olup; hem tek başına çalışan bir CLI ikilisi (`jpef.exe`), hem de evrensel C-ABI dinamik kütüphanesi (`jpef.dll` / `libjpef.so` / `libjpef.dylib`) üretir. Bu sayede aklınıza gelebilecek tüm modern dillerde birinci sınıf uyumluluk kütüphaneleri (bindings) sunar:
-
-- 🦀 **Rust**: Yerel Rust kütüphanesi ve CLI (`cargo add jpef`)
-- 🇨 **C**: Saf C99/C11 başlık dosyası (`jpef.h`)
-- ➕ **C++**: Modern C++17/C++20 RAII sarmalayıcısı (`jpef.hpp`)
-- 📜 **TypeScript & JavaScript**: Node.js, Bun ve Deno için Koffi FFI sarmalayıcısı ve `.d.ts` tip tanımları
-- 🔷 **C# / .NET**: .NET 8/9/10 için yüksek performanslı P/Invoke sarmalayıcısı (`Jpef.cs`)
-- 🐹 **Go**: Saf Go (`syscall.NewLazyDLL`) sıfır bağımlılıklı binding (`jpef.go`)
-- 🐍 **Python**: `ctypes` ile Rust çekirdeğine doğrudan bağlanan ultra hızlı sarmalayıcı (`jpef_rs.py`)
-- ☕ **Java**: Java 21 Foreign Function & Memory API (Panama) entegrasyonu (`Jpef.java`)
+<p align="center">
+  <img src="https://img.shields.io/badge/Rust-2021_Edition-dea584?style=for-the-badge&logo=rust&logoColor=black" alt="Rust">
+  <img src="https://img.shields.io/badge/Platforms-Windows%20%7C%20Linux%20%7C%20macOS-blue?style=for-the-badge" alt="Platforms">
+  <img src="https://img.shields.io/badge/Bindings-C%20%7C%20C%2B%2B%20%7C%20TS%20%7C%20C%23%20%7C%20Go%20%7C%20Py%20%7C%20Java-brightgreen?style=for-the-badge" alt="Bindings">
+  <img src="https://img.shields.io/badge/License-MIT-orange?style=for-the-badge" alt="License">
+</p>
 
 ---
 
-## 🚀 CLI Kullanımı (Rust Binary)
+## ⚡ Rust Core & Universal Multi-Language SDK
 
-### Derleme
+The **JPEF** core is built from scratch in **Rust** for safety, zero-overhead performance, and fearless concurrency. It compiles simultaneously as:
+1. A standalone high-speed CLI tool (`jpef` / `jpef.exe`).
+2. A universal C-ABI dynamic shared library (`jpef.dll` / `libjpef.so` / `libjpef.dylib`).
+
+This design provides first-class, idiomatic SDK bindings for every major programming environment:
+
+| Language | Integration Type | Location |
+| :--- | :--- | :--- |
+| 🦀 **Rust** | Native Crates & CLI (`cargo add jpef`) | `src/` |
+| 🇨 **C** | Pure C99/C11 Header API | `bindings/c/include/jpef.h` |
+| ➕ **C++** | Modern C++17/C++20 RAII Wrapper | `bindings/cpp/include/jpef.hpp` |
+| 📜 **TypeScript & JS** | Fast Koffi FFI wrapper + `.d.ts` types for Node.js, Bun & Deno | `bindings/typescript/` |
+| 🔷 **C# / .NET** | High-performance P/Invoke bindings for .NET 8 / 9 / 10 | `bindings/csharp/` |
+| 🐹 **Go** | Pure Go zero-dependency bindings (`syscall.NewLazyDLL`) | `bindings/go/` |
+| 🐍 **Python** | Native `ctypes` wrapper with type hints | `bindings/python/` |
+| ☕ **Java** | Java 21+ Foreign Function & Memory API (Project Panama) | `bindings/java/` |
+
+---
+
+## 🚀 CLI Usage (Rust Binary)
+
+### Building from Source
 ```bash
 cargo build --release
 ```
-Oluşan dosyalar:
-- `target/release/jpef.exe` (Rust CLI)
-- `target/release/jpef.dll` (C-ABI Kütüphanesi)
 
-### Komutlar
+Compiled binaries:
+* `target/release/jpef.exe` (Standalone CLI)
+* `target/release/jpef.dll` (C-ABI Shared Library)
 
-#### 1. JAR Analizi (`inspect`)
+---
+
+### Commands
+
+#### 1. Inspect a JAR File (`inspect`)
+Analyzes the JAR manifest, detects `Main-Class`, scans bytecode versions, and checks dependencies:
 ```bash
 ./target/release/jpef inspect MyApp.jar
 ```
 
-#### 2. Tüm Platformlara Dönüştürme (`convert`)
+#### 2. Convert to Native Executables (`convert`)
+Cross-compile a `.jar` into standalone native executables for all platforms:
 ```bash
 ./target/release/jpef convert MyApp.jar -t exe,elf,app -o dist/ --icon logo.png
 ```
 
-#### 3. Konsol ve Bellek Ayarlarıyla Dönüştürme
+#### 3. Advanced Configuration (JVM Args, Heap & Console)
 ```bash
 ./target/release/jpef convert MyApp.jar -t exe,elf,app -o dist/ \
   --name "SuperApp" \
@@ -53,7 +73,7 @@ Oluşan dosyalar:
 
 ---
 
-## 🌐 Çoklu Dil Uyumluluk Kütüphaneleri (Language Bindings)
+## 🌐 Language Bindings & SDK Examples
 
 ### 1. C (`bindings/c/`)
 ```c
@@ -68,13 +88,14 @@ int main() {
 
     JpefResult *res = jpef_convert(cfg);
     if (jpef_result_is_success(res)) {
-        printf("Başarılı! %zu dosya üretildi.\n", jpef_result_get_artifact_count(res));
+        printf("Conversion succeeded! Produced %zu artifacts.\n", jpef_result_get_artifact_count(res));
     }
     jpef_result_free(res);
     jpef_config_free(cfg);
+    return 0;
 }
 ```
-**Derleme:**
+**Compile:**
 ```bash
 gcc -Ibindings/c/include bindings/c/example.c target/release/jpef.dll -o example_c.exe
 ```
@@ -99,24 +120,25 @@ int main() {
             std::cout << art.platform << ": " << art.path << "\n";
         }
     }
+    return 0;
 }
 ```
-**Derleme:**
+**Compile:**
 ```bash
 g++ -std=c++17 -static-libgcc -static-libstdc++ -Ibindings/c/include -Ibindings/cpp/include bindings/cpp/example.cpp target/release/jpef.dll -o example_cpp.exe
 ```
 
 ---
 
-### 3. TypeScript & JavaScript (Node.js) (`bindings/typescript/`)
+### 3. TypeScript & JavaScript (Node.js / Bun / Deno) (`bindings/typescript/`)
 ```typescript
 import jpef from './bindings/typescript';
 
-// JAR İnceleme
+// Inspect JAR metadata
 const info = jpef.inspect("MyApp.jar");
-console.log(`Main-Class: ${info.mainClass}, Min Java: ${info.minJavaVersion}`);
+console.log(`Main-Class: ${info.mainClass}, Min Java Version: ${info.minJavaVersion}`);
 
-// Dönüştürme
+// Convert to native executables
 const result = jpef.convert({
   jarPath: "MyApp.jar",
   outputDir: "dist",
@@ -127,16 +149,16 @@ const result = jpef.convert({
   maxHeap: "1024m"
 });
 
-console.log(`Oluşturuldu: ${result.artifacts.length} dosya`);
+console.log(`Successfully generated ${result.artifacts.length} platform binaries.`);
 ```
-**Çalıştırma:**
+**Run:**
 ```bash
 node bindings/typescript/example.js
 ```
 
 ---
 
-### 4. C# / .NET (`bindings/csharp/`)
+### 4. C# / .NET 8+ (`bindings/csharp/`)
 ```csharp
 using Jpef;
 
@@ -154,7 +176,7 @@ if (result.Success) {
     }
 }
 ```
-**Çalıştırma:**
+**Run:**
 ```bash
 dotnet run --project bindings/csharp/JpefApp.csproj
 ```
@@ -184,9 +206,9 @@ func main() {
     }
 }
 ```
-**Çalıştırma:**
+**Run:**
 ```bash
-go run . (bindings/go dizininde)
+go run .
 ```
 
 ---
@@ -195,27 +217,27 @@ go run . (bindings/go dizininde)
 ```python
 import jpef_rs
 
-# JAR Analizi
+# Inspect JAR file
 info = jpef_rs.inspect("MyApp.jar")
-print(f"Main-Class: {info.main_class}, Java: {info.min_java_version}+")
+print(f"Main-Class: {info.main_class}, Java Requirement: {info.min_java_version}+")
 
-# Dönüştürme
+# Convert to native binaries
 res = jpef_rs.convert(
     jar_path="MyApp.jar",
     output_dir="dist",
     app_name="PyApp",
     targets=["exe", "elf", "app"]
 )
-print(f"Başarılı: {len(res.artifacts)} dosya")
+print(f"Generated {len(res.artifacts)} native executables successfully.")
 ```
-**Çalıştırma:**
+**Run:**
 ```bash
 python bindings/python/example.py
 ```
 
 ---
 
-### 7. Java (`bindings/java/`)
+### 7. Java 21+ Project Panama (`bindings/java/`)
 ```java
 import jpef.Jpef;
 import java.util.List;
@@ -229,11 +251,11 @@ public class Main {
             true,
             List.of("-Dfile.encoding=UTF-8")
         );
-        System.out.println("Başarılı: " + res.success());
+        System.out.println("Status: " + res.success());
     }
 }
 ```
-**Derleme ve Çalıştırma (Java 21+):**
+**Compile & Run (Java 21+ Foreign Function API):**
 ```bash
 javac --enable-preview --source 21 bindings/java/jpef/Jpef.java bindings/java/Example.java
 java --enable-preview --enable-native-access=ALL-UNNAMED -cp bindings/java Example
@@ -241,12 +263,22 @@ java --enable-preview --enable-native-access=ALL-UNNAMED -cp bindings/java Examp
 
 ---
 
-## 🧪 Testleri Çalıştırma
+## 🧪 Testing
 
-### Rust Testleri
+### Rust Core Unit Tests
 ```bash
 cargo test
 ```
 
-### Çoklu Dil Entegrasyon Testleri
-Her dildeki `example` uygulamaları derlenip çalıştırılarak test edilmiştir.
+### Multi-Language Integration Tests
+Each language directory includes an automated test runner and verification suite confirming FFI stability with `jpef.dll` / `libjpef.so`.
+
+---
+
+## 🤝 Contributing & License
+
+Contributions, bug reports, and optimizations are welcome! Licensed under the [MIT License](LICENSE).
+
+<p align="center">
+  Crafted by <b>omerdev</b> (<a href="https://github.com/bruhgit">@bruhgit</a>)
+</p>
